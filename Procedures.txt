@@ -1,0 +1,24 @@
+Myectomy, Detunnelling
+Myectomy, CABG
+Myectomy
+Freestyle, CABG
+Freestyle, MV repair
+Freestyle, MVR
+Yacoub
+Ross, MV repair
+Ross, MVR
+Ross
+AV repair, MV repair
+AV Repair
+DVR, CABG
+AVR
+AVR, CABG
+AVR, AscAorta
+AVR, MV repair
+Bentall
+Asc.Aorta + Mrepair
+Freestyle, MVR
+Arepair, MVR
+CABG, MV repair 
+CABG, MVR
+CABG
