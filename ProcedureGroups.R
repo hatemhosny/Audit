@@ -5,8 +5,8 @@ ProcedureGroups <- list(
                "Aortic Valve Repair ",
                "AVR Mechanical ",
                "AVR Stented Bioprosthesis ",
-               "Valve sparing Aortic Root Replacement ",
-               "Homograft Aortic Root Replacement ",
+               "Valve-sparing Aortic Root ",
+               "Homograft Aortic Root ",
                "Bentall ",
                "Ascending Aortic Replacement ",
                "Arch Replacement "),
@@ -42,7 +42,7 @@ ProcedureGroups <- list(
   ),
   Pediatrics = list(
     TGA = c("Arterial switch ", "Atrial switch Mustard ", "Rastelli "),
-    Arch = c("Arch Repair ", "Coarctectomy with extended end to end anastomosis "),
+    Arch = c("Arch Repair ", "CoA X-end-to-end "),
     Palliative = c("Glenn ", "DKS ", "Atrial Septectomy ", "MBT Shunt ",
                    "Central shunt ", "PA Banding ", "First Stage Switch PAB BTS ")
   )

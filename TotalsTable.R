@@ -1,11 +1,8 @@
 library(dplyr)
 
 source("FilterBy.R")
-source("FixProcedures.R")
 
-
-ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choice.") {
-
+TotalsTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
               "JUL",	"AUG",	"SEP",	"OCT",	"NOV",	"DEC", "Total")
@@ -20,19 +17,16 @@ ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choi
     getGroupFn <- GetGroup
   }
 
-  groups <- data.frame(row.names = usedInterval)
-  procs <- names(select(df, starts_with(prefix)))
+
+  TotalsFilter <- list(list("MRN", "", "neq"))
+  Total <- getGroupFn(df, year, TotalsFilter)
 
 
-  for (proc in procs) {
-    groups <- cbind(groups, getGroupFn(df, year, list(list(proc, TRUE))))
-  }
-
-  colnames(groups) <-  procs %>% FixProcedures
-
-  Table <- groups %>%
+  totalsTable <- data.frame(Total, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 
-  Table
+  totalsTable
 }
+
+

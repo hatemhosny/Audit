@@ -3,7 +3,11 @@ FixProcedures <- function(df) {
     c("Procedures..choice.", ""),
     c("..", " "),
     c(".", " "),
-    c("Pulmonary Valve Replacement", "PVR")
+    c("Pulmonary Valve Replacement", "PVR"),
+    c("Coarctectomy with extended end to end anastomosis", "CoA X-end-to-end"),
+    c("Anomalous Systemic Venous Drainage Repair", "Systemic Venous Drainage Repair"),
+    c("Valve sparing Aortic Root Replacement", "Valve-sparing Aortic Root"),
+    c("Homograft Aortic Root Replacement", "Homograft Aortic Root")
   )
 
   for (fix in procedureFixes) {

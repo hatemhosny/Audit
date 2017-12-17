@@ -1,11 +1,8 @@
 library(dplyr)
 
 source("FilterBy.R")
-source("FixProcedures.R")
 
-
-ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choice.") {
-
+GenderTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
               "JUL",	"AUG",	"SEP",	"OCT",	"NOV",	"DEC", "Total")
@@ -20,19 +17,21 @@ ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choi
     getGroupFn <- GetGroup
   }
 
-  groups <- data.frame(row.names = usedInterval)
-  procs <- names(select(df, starts_with(prefix)))
+
+  MalesFilter <- list(list("Gender", "Male"))
+  Males <- getGroupFn(df, year, MalesFilter)
+
+  FemalesFilter <- list(list("Gender", "Female"))
+  Females <- getGroupFn(df, year, FemalesFilter)
 
 
-  for (proc in procs) {
-    groups <- cbind(groups, getGroupFn(df, year, list(list(proc, TRUE))))
-  }
+  Total <- Males + Females
 
-  colnames(groups) <-  procs %>% FixProcedures
-
-  Table <- groups %>%
+  genderTable <- data.frame(Males, Females, Total, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 
-  Table
+  genderTable
 }
+
+

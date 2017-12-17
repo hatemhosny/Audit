@@ -2,7 +2,7 @@ library(xlsx)
 
 source("PlotProcedures.R")
 
-WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, title="",
+WriteToExcel <- function(df, file, sheet, fn, years=2017:2009, isPlot=FALSE, title="",
                          append=FALSE, ...) {
 
   createOrLoadWorkbook <- function(file) {
@@ -51,6 +51,9 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
   COLNAMES_STYLE <- CellStyle(wb) + Font(wb, isBold=TRUE) +
     Alignment(horizontal="ALIGN_CENTER")
 
+  ROWNAMES_STYLE <- CellStyle(wb) + Font(wb, isBold=TRUE) +
+    Alignment(horizontal="ALIGN_LEFT")
+
   HEADER_STYLE <- list("1" = CellStyle(wb) +
                          Font(wb, heightInPoints=10, isBold=TRUE, color ="9", name="Arial") +
                          Fill(foregroundColor="#0069AA") +
@@ -83,7 +86,7 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
     for (year in years) {
 
       addDataFrame(fn(data, year, ...), workSheet, startRow = nextRow,
-                   colnamesStyle = COLNAMES_STYLE, rownamesStyle = COLNAMES_STYLE)
+                   colnamesStyle = COLNAMES_STYLE, rownamesStyle = ROWNAMES_STYLE)
       addDataFrame(as.data.frame(year), workSheet, startRow = nextRow,
                    col.names=FALSE, row.names=FALSE, colStyle=HEADER_STYLE)
 
@@ -91,5 +94,6 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
     }
   }
 
+  autoSizeColumn(workSheet, colIndex=1)
   saveWorkbook(wb, file)
 }
