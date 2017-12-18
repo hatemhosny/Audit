@@ -9,16 +9,15 @@ Ross, MV repair
 Ross, MVR
 Ross
 AV repair, MV repair
+AV repair, MVR
 AV Repair
 DVR, CABG
-AVR
 AVR, CABG
 AVR, AscAorta
 AVR, MV repair
+AVR
 Bentall
-Asc.Aorta + Mrepair
-Freestyle, MVR
-Arepair, MVR
+Asc.Aorta + MV repair
 CABG, MV repair 
 CABG, MVR
 CABG

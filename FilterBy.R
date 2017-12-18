@@ -17,6 +17,14 @@ FilterBy <- function(dataFrame, x, val, match = "eq") {
   }
 }
 
+FilterIsolated <- function(dataFrame, x, val=TRUE, prefix="Procedures..choice.") {
+  df <- dataFrame[dataFrame[,x] == val,] %>%
+    rename_at(vars(starts_with(x)), function(var) "tmp") %>%
+    filter_at(vars(starts_with(prefix)), all_vars(. != val)) %>%
+    rename_at(vars(starts_with("tmp")), function(var) x)
+  df
+}
+
 FilterByYear <- function(dataFrame, year) {
   start.date <- as.Date(paste(year, "01", "01", sep = "-"))
   end.date <- as.Date(paste(year, "12", "31", sep = "-"))

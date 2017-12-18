@@ -2,13 +2,14 @@ library(xlsx)
 
 source("PlotProcedures.R")
 
-WriteToExcel <- function(df, file, sheet, fn, years=2017:2009, isPlot=FALSE, title="",
+WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, title="",
                          append=FALSE, ...) {
 
   createOrLoadWorkbook <- function(file) {
     if(file.exists(file)){
       wb <- loadWorkbook(file)
     } else {
+      print(paste("Creating a new excel file:", file))
       wb <- createWorkbook(type="xlsx")
     }
     wb
