@@ -72,16 +72,24 @@ FilterByQuarter <- function(dataFrame, year, quarter) {
 }
 
 
-GetGroup <- function(df, year, filters = list()) {
+GetGroup <- function(df, year, filters = list(), apply.filters="and") {
 
   group <- c()
   for (month in 1:12) {
 
     filtered.df <- df
-    for (filter in filters) {
-      filtered.df <- do.call(FilterBy, append(filter, list(filtered.df), 0))
-    }
 
+    if (apply.filters == "or") {
+      filtered.df <- filtered.df[0,]
+      for (filter in filters) {
+        filtered.i.df <- do.call(FilterBy, append(filter, list(df), 0))
+        filtered.df <- rbind(filtered.df, filtered.i.df, stringsAsFactors=FALSE)
+      }
+    } else {
+      for (filter in filters) {
+        filtered.df <- do.call(FilterBy, append(filter, list(filtered.df), 0))
+      }
+    }
     group[month] <- filtered.df %>%
       FilterByMonth(year, month) %>%
       nrow()
@@ -92,14 +100,23 @@ GetGroup <- function(df, year, filters = list()) {
 
 }
 
-GetGroupByQuarter <- function(df, year, filters = list()) {
+GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and") {
 
   group <- c()
   for (quarter in c("Q1", "Q2", "Q3", "Q4")) {
 
     filtered.df <- df
-    for (filter in filters) {
-      filtered.df <- do.call(FilterBy, append(filter, list(filtered.df), 0))
+
+    if (apply.filters == "or") {
+      filtered.df <- filtered.df[0,]
+      for (filter in filters) {
+        filtered.i.df <- do.call(FilterBy, append(filter, list(df), 0))
+        filtered.df <- rbind(filtered.df, filtered.i.df, stringsAsFactors=FALSE)
+      }
+    } else {
+      for (filter in filters) {
+        filtered.df <- do.call(FilterBy, append(filter, list(filtered.df), 0))
+      }
     }
 
     group[quarter] <- filtered.df %>%
@@ -111,6 +128,47 @@ GetGroupByQuarter <- function(df, year, filters = list()) {
   group
 
 }
+
+
+GetGroupMean <- function(df, year, filters = list(), col, apply.filters="and") {
+
+  is.nan.data.frame <- function(x) {
+    do.call(cbind, lapply(x, is.nan))
+  }
+
+  group <- c()
+  for (month in 1:12) {
+
+    filtered.df <- df
+
+    if (apply.filters == "or") {
+      filtered.df <- filtered.df[0,]
+      for (filter in filters) {
+        filtered.i.df <- do.call(FilterBy, append(filter, list(df), 0))
+        filtered.df <- rbind(filtered.df, filtered.i.df, stringsAsFactors=FALSE)
+      }
+    } else {
+      for (filter in filters) {
+        filtered.df <- do.call(FilterBy, append(filter, list(filtered.df), 0))
+      }
+    }
+
+    filtered.df <- filtered.df %>%
+      FilterByMonth(year, month)
+
+    group[month] <- filtered.df[[col]] %>%
+      as.numeric() %>%
+      mean(na.rm=TRUE) %>%
+      round(2)
+  }
+
+  group[is.nan.data.frame(group)] <- 0
+  group[13] <- mean(group, na.rm=TRUE) %>% round(2)
+
+  group
+
+}
+
 
 # Usage:
 # -------------
