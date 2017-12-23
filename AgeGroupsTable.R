@@ -1,7 +1,3 @@
-library(dplyr)
-
-source("FilterBy.R")
-
 AgeGroupsTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",

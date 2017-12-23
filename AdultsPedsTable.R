@@ -1,7 +1,3 @@
-library(dplyr)
-
-source("FilterBy.R")
-
 AdultsPedsTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
@@ -33,5 +29,3 @@ AdultsPedsTable <- function(df, year, interval = "month") {
 
   adultsPedsTable
 }
-
-

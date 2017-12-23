@@ -1,8 +1,3 @@
-library(dplyr)
-library(lubridate)
-
-source("FilterBy.R")
-
 WeekDayTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",

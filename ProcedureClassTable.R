@@ -1,8 +1,4 @@
-library(dplyr)
-
-source("FilterBy.R")
 source("ProceduresClassification.R")
-
 
 ProcedureClassTable <- function(df, year, interval = "month") {
 

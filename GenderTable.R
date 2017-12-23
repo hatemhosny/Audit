@@ -1,7 +1,3 @@
-library(dplyr)
-
-source("FilterBy.R")
-
 GenderTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",

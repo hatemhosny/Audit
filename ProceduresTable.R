@@ -1,8 +1,4 @@
-library(dplyr)
-
-source("FilterBy.R")
-source("FixProcedures.R")
-
+source("FixProcedureNames.R")
 
 ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choice.") {
 
@@ -28,7 +24,7 @@ ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choi
     groups <- cbind(groups, getGroupFn(df, year, list(list(proc, TRUE))))
   }
 
-  colnames(groups) <-  procs %>% FixProcedures
+  colnames(groups) <-  procs %>% FixProcedureNames()
 
   Table <- groups %>%
     t() %>%

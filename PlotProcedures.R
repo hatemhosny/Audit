@@ -1,9 +1,5 @@
-library(circlize)
-library(dplyr)
-
-source("FilterBy.R")
 source("ProcedureGroups.R")
-source("FixProcedures.R")
+source("FixProcedureNames.R")
 
 PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in", pointsize=12) {
 
@@ -14,18 +10,23 @@ PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in"
     relation <- data.frame(from=character(), to=character(), weight=integer(), stringsAsFactors=FALSE)
     for(i in 1:length(procs)) {
       x <- i
-      selfCount <- 0
+      # selfCount <- 0
       filter1 <- FilterBy(df, procs[i], TRUE)
       for(j in x:length(procs)) {
         rowCount <- nrow(FilterBy(filter1, procs[j], TRUE))
         relation <- rbind(relation, data.frame(from=procs[i], to=procs[j], weight=rowCount))
-        if (j == i) {
-          selfCount <- rowCount
-        }
+        # if (j == i) {
+        #   selfCount <- rowCount
+        # }
       }
-      relationToOthers <- filter(relation, from == procs[i] & to != procs[i])
+      # relationToOthers <- rbind(filter(relation, from == procs[i] & to != procs[i]),
+      #                           filter(relation, from != procs[i] & to == procs[i]))
+
+      # relation[relation$from == procs[i] & relation$to == procs[i],3] <-
+      #   selfCount - sum(relationToOthers$weight)
+
       relation[relation$from == procs[i] & relation$to == procs[i],3] <-
-        selfCount - sum(relationToOthers$weight)
+        nrow(FilterIsolated(df, procs[i]))
     }
     relation
   }
@@ -41,7 +42,7 @@ PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in"
   drawPlot <- function(df) {
     relDf <- GetProcedureAssociations(df)
 
-    relDf[-3] <- FixProcedures(relDf[-3])
+    #relDf[-3] <- FixProcedureNames(relDf[-3])
 
     colors <- c("#FF0000", "#D2960C", "#7DAF00", "#7500FF", "#A0007D", "#1D64FF",
                     "#00FFE9", "#49FF64", "#64927D", "#FFDB00")
@@ -59,9 +60,9 @@ PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in"
 
     # we go back to the first track and customize sector labels
     circos.track(track.index = 1, panel.fun = function(x, y) {
-      circos.text(CELL_META$xcenter, CELL_META$ylim[1]+0.6, CELL_META$sector.index,
+      circos.text(CELL_META$xcenter, CELL_META$ylim[1]+0.6, FixProcedureNames(CELL_META$sector.index),
                   facing="clockwise", niceFacing=TRUE, adj=c(0, 0.5), cex=0.7)
-      circos.text(CELL_META$xcenter, 0.03, CELL_META$xlim[2],
+      circos.text(CELL_META$xcenter, 0.03, nrow(FilterBy(df, CELL_META$sector.index)),
                   niceFacing=TRUE, adj=c(0.5, 0.5), cex=0.7)
     }, bg.border = NA) # here set bg.border to NA is important
 

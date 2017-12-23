@@ -1,7 +1,3 @@
-library(dplyr)
-
-source("FilterBy.R")
-
 RedoTable <- function(df, year, interval = "month") {
 
   months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
@@ -18,10 +14,10 @@ RedoTable <- function(df, year, interval = "month") {
   }
 
 
-  FirstOperationFilter <- list(list("Redo.Operation", "Yes", "neq"))
+  FirstOperationFilter <- list(list("Redo.Operation", TRUE, "neq"))
   First_Operation <- getGroupFn(df, year, FirstOperationFilter)
 
-  Redo_OperationFilter <- list(list("Redo.Operation", "Yes"))
+  Redo_OperationFilter <- list(list("Redo.Operation", TRUE))
   Redo_Operation <- getGroupFn(df, year, Redo_OperationFilter)
 
 

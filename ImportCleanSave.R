@@ -1,6 +1,8 @@
-library(dplyr)
-
 ImportCleanSave <- function(inputFile, outputFile) {
+
+  drop.cols <- c("Age",
+                 "Residence",
+                 "Specify.Residence")
 
   FixEncoding <- function(df) {
     names(df)[1] <- "Patient.ID"
@@ -59,9 +61,22 @@ ImportCleanSave <- function(inputFile, outputFile) {
     df
   }
 
+  ConvertYesNo <- function(df) {
+    df[df=="No"] <- FALSE
+    df[df=="Yes"] <- TRUE
+    df
+  }
+
+  DropColumns <- function(df, drop.cols) {
+    df <- df %>% select(-one_of(drop.cols))
+    df
+  }
+
   df <- read.csv(inputFile, stringsAsFactors = FALSE) %>%
     FixEncoding() %>%
     FixReadmissionData %>%
     ConvertChecked() %>%
+    ConvertYesNo() %>%
+    DropColumns(drop.cols) %>%
     write.csv(outputFile)
 }

@@ -1,4 +1,4 @@
-FixProcedures <- function(df) {
+FixProcedureNames <- function(df) {
   procedureFixes <- list(
     c("Procedures..choice.", ""),
     c("..", " "),
@@ -7,7 +7,8 @@ FixProcedures <- function(df) {
     c("Coarctectomy with extended end to end anastomosis", "CoA X-end-to-end"),
     c("Anomalous Systemic Venous Drainage Repair", "Systemic Venous Drainage Repair"),
     c("Valve sparing Aortic Root Replacement", "Valve-sparing Aortic Root"),
-    c("Homograft Aortic Root Replacement", "Homograft Aortic Root")
+    c("Homograft Aortic Root Replacement", "Homograft Aortic Root"),
+    c("Pulmonary Trans annular Patch", "Pulmonary Trans-annular Patch")
   )
 
   for (fix in procedureFixes) {

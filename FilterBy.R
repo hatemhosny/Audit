@@ -1,50 +1,47 @@
-library(dplyr)
-library(lubridate)  # for days_in_month()
-
-FilterBy <- function(dataFrame, x, val, match = "eq") {
+FilterBy <- function(df, x, val=TRUE, match="eq") {
   if (match == "neq") {
-    dataFrame[dataFrame[,x] != val,]
+    df[df[,x] != val,]
   } else if (match == "lt") {
-    dataFrame[dataFrame[,x] < val,]
+    df[df[,x] < val,]
   } else if (match == "lte") {
-    dataFrame[dataFrame[,x] <= val,]
+    df[df[,x] <= val,]
   } else if (match == "mt") {
-    dataFrame[dataFrame[,x] > val,]
+    df[df[,x] > val,]
   } else if (match == "mte") {
-    dataFrame[dataFrame[,x] >= val,]
+    df[df[,x] >= val,]
   } else {
-    dataFrame[dataFrame[,x] == val,]
+    df[df[,x] == val,]
   }
 }
 
-FilterIsolated <- function(dataFrame, x, val=TRUE, prefix="Procedures..choice.") {
-  df <- dataFrame[dataFrame[,x] == val,] %>%
+FilterIsolated <- function(df, x, val=TRUE, prefix="Procedures..choice.") {
+  df <- df[df[,x] == val,] %>%
     rename_at(vars(starts_with(x)), function(var) "tmp") %>%
     filter_at(vars(starts_with(prefix)), all_vars(. != val)) %>%
     rename_at(vars(starts_with("tmp")), function(var) x)
   df
 }
 
-FilterByYear <- function(dataFrame, year) {
+FilterByYear <- function(df, year) {
   start.date <- as.Date(paste(year, "01", "01", sep = "-"))
   end.date <- as.Date(paste(year, "12", "31", sep = "-"))
-  patients <- subset(dataFrame,
+  patients <- subset(df,
                      as.Date(Date.of.Operation) >= start.date &
                        as.Date(Date.of.Operation) <= end.date
   )
 }
 
-FilterByMonth <- function(dataFrame, year, month) {
+FilterByMonth <- function(df, year, month) {
   start.date <- as.Date(paste(year, month, "01", sep = "-"))
   end.date <- as.Date(paste(year, month, days_in_month(start.date), sep = "-"))
-  patients <- subset(dataFrame,
+  patients <- subset(df,
                      as.Date(Date.of.Operation) >= start.date &
                        as.Date(Date.of.Operation) <= end.date
   )
 }
 
 
-FilterByQuarter <- function(dataFrame, year, quarter) {
+FilterByQuarter <- function(df, year, quarter) {
 
     if (quarter == "Q1") {
     startMonth <- 1
@@ -65,7 +62,7 @@ FilterByQuarter <- function(dataFrame, year, quarter) {
   start.date <- as.Date(paste(year, startMonth, "01", sep = "-"))
   end.date <- as.Date(paste(year, endMonth, days_in_month(endMonthDate), sep = "-"))
 
-  patients <- subset(dataFrame,
+  patients <- subset(df,
                      as.Date(Date.of.Operation) >= start.date &
                        as.Date(Date.of.Operation) <= end.date
   )
@@ -172,7 +169,7 @@ GetGroupMean <- function(df, year, filters = list(), col, apply.filters="and") {
 
 # Usage:
 # -------------
-# result <- dataFrame %>%
+# result <- df %>%
 #           FilterBy("Surgeon.1", "Hatem Hosny") %>%
 #           FilterBy("Section", "Pediatrics") %>%
 #           FilterByMonth(2017, 11)
