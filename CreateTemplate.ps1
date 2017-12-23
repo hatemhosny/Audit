@@ -1,10 +1,12 @@
-# powershell -file CreateTemplate2.ps1 ../output/audit2-Copy.xlsx template.xlsx Charts
+# powershell -file CreateTemplate.ps1 ../output/audit.xlsx template.xlsx Charts
 
 $source = $args[0]
 $output = $args[1]
 $keepSheet = $args[2]
 
-# Install-Module PSExcel -scope CurrentUser
+if (-Not(Get-Module -ListAvailable -Name PSExcel)) {
+  Install-Module PSExcel -scope CurrentUser -Force
+}
 Import-Module PSExcel
 
 Copy-Item -Path $PSScriptRoot\$source -Destination $PSScriptRoot\$output
