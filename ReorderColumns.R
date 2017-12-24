@@ -1,7 +1,13 @@
-RedorderColumns <- function(df) {
+ReorderColumns <- function(df) {
+
+  # rowNamesToColumn <- function(df, col.name="Record.ID") {
+  #   df[col.name] <- as.integer(rownames(df))
+  #   df
+  # }
 
   df <- df %>%
-    select(Patient.ID,
+    select(Record.ID,
+           Patient.ID,
            Event.Name,
            MRN,
            Name,

@@ -6,7 +6,7 @@ raw.data.file <- "../data/data.csv"
 clean.data.file <- "../data/data-clean.csv"
 output.file <- "../output/audit.xlsx"
 
-# ImportCleanSave(raw.data.file, clean.data.file)
+ImportCleanSave(raw.data.file, clean.data.file)
 data <- read.csv(clean.data.file, stringsAsFactors = FALSE)
 
 data <- data %>%

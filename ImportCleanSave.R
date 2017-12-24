@@ -4,22 +4,22 @@ ImportCleanSave <- function(inputFile, outputFile) {
                  "Residence",
                  "Specify.Residence")
 
-  FixEncoding <- function(df) {
-    names(df)[1] <- "Patient.ID"
+  fixEncoding <- function(df) {
+    names(df)[1] <- "Name"
     # names(df)[1] <- gsub("ï..", "", names(df)[1])
     df
   }
 
 
-  FixReadmissionData <- function(dataFrame) {
+  fixReadmissionData <- function(df) {
 
     getFixedVar <- function(x, df, var) {
       if (x[["Event.Name"]] == "Initial Data"){
         result <- x[var]
       } else {
-        result <- df %>%
-          filter(Patient.ID == x[["Patient.ID"]] & Event.Name == "Initial Data") %>%
-          select(var)
+        initial.data <- df %>%
+          filter(Patient.ID == as.integer(x[["Patient.ID"]]) & Event.Name == "Initial Data")
+        result <- initial.data[1, var]
       }
       result
     }
@@ -41,46 +41,49 @@ ImportCleanSave <- function(inputFile, outputFile) {
       output
     }
 
-    output <- dataFrame %>%
+    output <- df %>%
       fixVar("MRN") %>%
       fixVar("Name") %>%
       fixVar("Gender") %>%
       fixVar("Date.of.Birth") %>%
-      fixVar("Age") %>%
       fixVar("City") %>%
-      fixVar("Residence") %>%
-      fixVar("Specify.Residence") %>%
       fixVar("Section")
 
     output
   }
 
-  ConvertChecked <- function(df) {
+  convertChecked <- function(df) {
     df[df=="Unchecked"] <- FALSE
     df[df=="Checked"] <- TRUE
     df
   }
 
-  ConvertYesNo <- function(df) {
+  convertYesNo <- function(df) {
     df[df=="No"] <- FALSE
     df[df=="Yes"] <- TRUE
     df
   }
 
-  DropColumns <- function(df, drop.cols) {
+  dropColumns <- function(df, drop.cols) {
     df <- df %>% select(-one_of(drop.cols))
+    df
+  }
+
+  createIndex <- function(df, col.name="Record.ID") {
+    df[col.name] <- seq.int(nrow(df))
     df
   }
 
   print(paste("Importing and cleaning data from:", inputFile))
 
   df <- read.csv(inputFile, stringsAsFactors = FALSE) %>%
-    FixEncoding() %>%
-    FixReadmissionData %>%
-    ConvertChecked() %>%
-    ConvertYesNo() %>%
-    RedorderColumns %>%
-    DropColumns(drop.cols) %>%
+    fixEncoding() %>%
+    fixReadmissionData() %>%
+    convertChecked() %>%
+    convertYesNo() %>%
+    dropColumns(drop.cols) %>%
     RemoveStepProcedures() %>%
-    write.csv(outputFile)
+    createIndex() %>%
+    ReorderColumns() %>%
+    write.csv(outputFile, row.names=FALSE)
 }

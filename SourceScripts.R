@@ -1,5 +1,5 @@
 source("LoadDependencies.R")
-source("RedorderColumns.R")
+source("ReorderColumns.R")
 source("RemoveStepProcedures.R")
 source("ImportCleanSave.R")
 source("FilterBy.R")

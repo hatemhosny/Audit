@@ -1,4 +1,7 @@
 FilterBy <- function(df, x, val=TRUE, match="eq") {
+  # filter out NA
+  df <- df[complete.cases(df[,x]),]
+
   if (match == "neq") {
     df[df[,x] != val,]
   } else if (match == "lt") {
