@@ -72,11 +72,15 @@ ImportCleanSave <- function(inputFile, outputFile) {
     df
   }
 
+  print(paste("Importing and cleaning data from:", inputFile))
+
   df <- read.csv(inputFile, stringsAsFactors = FALSE) %>%
     FixEncoding() %>%
     FixReadmissionData %>%
     ConvertChecked() %>%
     ConvertYesNo() %>%
+    RedorderColumns %>%
     DropColumns(drop.cols) %>%
+    RemoveStepProcedures() %>%
     write.csv(outputFile)
 }

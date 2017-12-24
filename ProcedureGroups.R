@@ -19,6 +19,7 @@ ProcedureGroups <- list(
     GUCH = c("Procedures..choice.Arterial.switch.",
              "Procedures..choice.Atrial.switch..Mustard..",
              "Procedures..choice.Rastelli.",
+             "Procedures..choice.ALCAPA.Repair.",
              "Procedures..choice.Coarctectomy.with.extended.end.to.end.anastomosis.",
              "Procedures..choice.Extra.anatomical.Bypass.of.CoA.",
              "Procedures..choice.PAPVC.Repair.",
@@ -50,9 +51,11 @@ ProcedureGroups <- list(
              "Procedures..choice.MBT.Shunt.",
              "Procedures..choice.Central.shunt.",
              "Procedures..choice.PA.Banding."),
-    Closure = c("Procedures..choice.Chest.Closure.",
-                "Procedures..choice.Rewiring.",
-                "Procedures..choice.Wound.Debridement.")
+    Minors = c("Procedures..choice.Permanent.Epicardial.Pacemaker.",
+               "Procedures..choice.Plication.of.Diaphragm.",
+               "Procedures..choice.Chest.Closure.",
+               "Procedures..choice.Rewiring.",
+               "Procedures..choice.Wound.Debridement.")
   ),
   Pediatrics = list(
     TGA = c("Procedures..choice.Arterial.switch.",
@@ -79,7 +82,8 @@ ProcedureGroups <- list(
                  "Procedures..choice.Tricuspid.Valve.Repair.",
                  "Procedures..choice.TVR..Mechanical..",
                  "Procedures..choice.TVR..Stented.Bioprosthesis.."),
-    RVOT_PA = c("Procedures..choice.Pulmonary.Valve.Replacement..Homograft..",
+    RVOT_PA = c("Procedures..choice.Fallot.Repair.",
+                "Procedures..choice.Pulmonary.Valve.Replacement..Homograft..",
                 "Procedures..choice.Pulmonary.Valve.Replacement..Freestyle..",
                 "Procedures..choice.Pulmonary.Valve.Replacement..Stented.Bioprosthesis..",
                 "Procedures..choice.MPA.Reconstruction.",
@@ -96,7 +100,12 @@ ProcedureGroups <- list(
                    "Procedures..choice.MBT.Shunt.",
                    "Procedures..choice.Central.shunt.",
                    "Procedures..choice.PA.Banding.",
-                   "Procedures..choice.First.Stage.Switch..PAB..BTS..")
+                   "Procedures..choice.First.Stage.Switch..PAB..BTS.."),
+    Minors = c("Procedures..choice.Permanent.Epicardial.Pacemaker.",
+               "Procedures..choice.Plication.of.Diaphragm.",
+               "Procedures..choice.Chest.Closure.",
+               "Procedures..choice.Rewiring.",
+               "Procedures..choice.Wound.Debridement.")
   )
 )
 

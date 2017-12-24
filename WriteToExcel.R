@@ -3,10 +3,10 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
 
   createOrLoadWorkbook <- function(file) {
     if(file.exists(file)){
-      print(paste("Updating the file:", file))
+      print(paste("Updating file:", file))
       wb <- loadWorkbook(file)
     } else if(file.exists(template)){
-      print(paste("Using the template:", template, ", to write the file:", file))
+      print(paste("Using template:", template, ", to write file:", file))
       wb <- loadWorkbook(template)
     } else {
       print(paste("Creating a new excel file:", file))

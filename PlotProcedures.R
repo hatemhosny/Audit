@@ -10,20 +10,11 @@ PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in"
     relation <- data.frame(from=character(), to=character(), weight=integer(), stringsAsFactors=FALSE)
     for(i in 1:length(procs)) {
       x <- i
-      # selfCount <- 0
       filter1 <- FilterBy(df, procs[i], TRUE)
       for(j in x:length(procs)) {
         rowCount <- nrow(FilterBy(filter1, procs[j], TRUE))
         relation <- rbind(relation, data.frame(from=procs[i], to=procs[j], weight=rowCount))
-        # if (j == i) {
-        #   selfCount <- rowCount
-        # }
       }
-      # relationToOthers <- rbind(filter(relation, from == procs[i] & to != procs[i]),
-      #                           filter(relation, from != procs[i] & to == procs[i]))
-
-      # relation[relation$from == procs[i] & relation$to == procs[i],3] <-
-      #   selfCount - sum(relationToOthers$weight)
 
       relation[relation$from == procs[i] & relation$to == procs[i],3] <-
         nrow(FilterIsolated(df, procs[i]))
@@ -31,10 +22,14 @@ PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in"
     relation
   }
 
-  highlightGroup <- function(groupName, sectionGroups, color=rand_color(1, transparency = 0.5)) {
+  highlightGroup <- function(groupName, sectionGroups) {
+    colors <- c("#0072bb", "#00A1FF", "#75CCFF", "#6874e8", "#4da1a9", "#477998", "#d36135",
+                "#b84a62", "#bf1363")
+    col = colors[match(groupName,names(sectionGroups))]
+
     group <- intersect(get.all.sector.index(), sectionGroups[[groupName]])
     highlight.sector(sector.index = group,
-                     track.index = 1, text=groupName, col = color,
+                     track.index = 1, text=groupName, col = col,
                      padding=c(-0.2,0,-0.5,0), border=1, niceFacing=TRUE,
                      cex = 0.8, text.col = "white")
   }
@@ -42,7 +37,6 @@ PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in"
   drawPlot <- function(df) {
     relDf <- GetProcedureAssociations(df)
 
-    #relDf[-3] <- FixProcedureNames(relDf[-3])
 
     colors <- c("#FF0000", "#D2960C", "#7DAF00", "#7500FF", "#A0007D", "#1D64FF",
                     "#00FFE9", "#49FF64", "#64927D", "#FFDB00")

@@ -11,9 +11,9 @@ data <- read.csv(clean.data.file, stringsAsFactors = FALSE)
 
 data <- data %>%
   FilterBy("Procedures..choice.Exploration.for.bleeding.", FALSE) %>%
-  RemoveStepProcedures()
+  select(-Procedures..choice.Exploration.for.bleeding.)
 
-print("Creating reports. Please wait...")
+print("Creating reports...")
 
 # 2017
 WriteToExcel(data, output.file, "2017", TotalsTable, 2017)
