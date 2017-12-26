@@ -1,7 +1,6 @@
 WeekDayTable <- function(df, year, interval = "month") {
 
-  months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
-              "JUL",	"AUG",	"SEP",	"OCT",	"NOV",	"DEC", "Mean")
+  months <-   months <- Config$Months.Mean
 
   usedInterval <- months
   getGroupFn <- GetGroupMean

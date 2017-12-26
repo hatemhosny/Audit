@@ -1,9 +1,7 @@
 RedoTable <- function(df, year, interval = "month") {
 
-  months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
-              "JUL",	"AUG",	"SEP",	"OCT",	"NOV",	"DEC", "Total")
-
-  quarters <- c("Q1",	"Q2",	"Q3",	"Q4", "Total")
+  months <- Config$Months.Total.Mean
+  quarters <- Config$Quarters.Total.Mean
 
   if (interval == "quarter") {
     usedInterval <- quarters
@@ -14,7 +12,7 @@ RedoTable <- function(df, year, interval = "month") {
   }
 
 
-  FirstOperationFilter <- list(list("Redo.Operation", TRUE, "neq"))
+  FirstOperationFilter <- list(list("Redo.Operation", FALSE))
   First_Operation <- getGroupFn(df, year, FirstOperationFilter)
 
   Redo_OperationFilter <- list(list("Redo.Operation", TRUE))

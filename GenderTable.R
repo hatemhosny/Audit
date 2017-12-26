@@ -1,9 +1,7 @@
 GenderTable <- function(df, year, interval = "month") {
 
-  months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
-              "JUL",	"AUG",	"SEP",	"OCT",	"NOV",	"DEC", "Total")
-
-  quarters <- c("Q1",	"Q2",	"Q3",	"Q4", "Total")
+  months <- Config$Months.Total.Mean
+  quarters <- Config$Quarters.Total.Mean
 
   if (interval == "quarter") {
     usedInterval <- quarters

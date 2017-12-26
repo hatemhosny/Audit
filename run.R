@@ -6,7 +6,7 @@ raw.data.file <- "../data/data.csv"
 clean.data.file <- "../data/data-clean.csv"
 output.file <- "../output/audit.xlsx"
 
-ImportCleanSave(raw.data.file, clean.data.file)
+# ImportCleanSave(raw.data.file, clean.data.file)
 data <- read.csv(clean.data.file, stringsAsFactors = FALSE)
 
 data <- data %>%
@@ -34,8 +34,8 @@ WriteToExcel(data, output.file, "Totals", TotalsTable, interval="quarter", appen
 WriteToExcel(data, output.file, "Adults-Peds", AdultsPedsTable)
 WriteToExcel(data, output.file, "Adults-Peds", AdultsPedsTable, interval="quarter", append=TRUE)
 
-WriteToExcel(data, output.file, "Age Groups", AgeGroupsTable)
-WriteToExcel(data, output.file, "Age Groups", AgeGroupsTable, interval="quarter", append=TRUE)
+WriteToExcel(data, output.file, "Ped. Age Groups", AgeGroupsTable)
+WriteToExcel(data, output.file, "Ped. Age Groups", AgeGroupsTable, interval="quarter", append=TRUE)
 
 WriteToExcel(data, output.file, "Gender", GenderTable)
 WriteToExcel(data, output.file, "Gender", GenderTable, interval="quarter", append=TRUE)
@@ -47,6 +47,10 @@ WriteToExcel(data, output.file, "Week days", WeekDayTable)
 
 WriteToExcel(data, output.file, "Procedures", ProceduresTable)
 WriteToExcel(data, output.file, "Procedures", ProceduresTable, interval="quarter", append=TRUE)
+
+notRedo <- data %>%
+  FilterBy("Redo.Operation", FALSE)
+WriteToExcel(notRedo, output.file, "Non-redo Procedures", ProceduresTable)
 
 WriteToExcel(data, output.file, "Redo", RedoTable)
 WriteToExcel(data, output.file, "Redo", RedoTable, interval="quarter", append=TRUE)

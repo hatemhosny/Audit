@@ -1,9 +1,7 @@
 AgeGroupsTable <- function(df, year, interval = "month") {
 
-  months <- c("JAN",	"FEB",	"MAR",	"APR", "MAY",	"JUN",
-              "JUL",	"AUG",	"SEP",	"OCT",	"NOV",	"DEC", "Total")
-
-  quarters <- c("Q1",	"Q2",	"Q3",	"Q4", "Total")
+  months <- Config$Months.Total.Mean
+  quarters <- Config$Quarters.Total.Mean
 
   if (interval == "quarter") {
     usedInterval <- quarters
@@ -12,6 +10,9 @@ AgeGroupsTable <- function(df, year, interval = "month") {
     usedInterval <- months
     getGroupFn <- GetGroup
   }
+
+  df <- df %>%
+    FilterBy("Section", "Pediatrics")
 
   df$days.from.operation <- as.Date(df[["Date.of.Operation"]], format = "%Y-%m-%d") -
     as.Date(df[["Date.of.Birth"]], format = "%Y-%m-%d")
@@ -25,13 +26,19 @@ AgeGroupsTable <- function(df, year, interval = "month") {
     )
   infants <- getGroupFn(df, year, infantsFilter)
 
-  olderFilter <- list(list("days.from.operation", 365, "mt"))
+  toddlersFilter <- list(
+    list("days.from.operation", 365, "mt"),
+    list("days.from.operation", 730, "lte")
+    )
+  toddlers <- getGroupFn(df, year, toddlersFilter)
+
+  olderFilter <- list(list("days.from.operation", 730, "mt"))
   older <- getGroupFn(df, year, olderFilter)
 
 
-  Total <- neonates + infants + older
+  Total <- neonates + infants + toddlers + older
 
-  ageGroupsTable <- data.frame(neonates, infants, older, Total, row.names = usedInterval) %>%
+  ageGroupsTable <- data.frame(neonates, infants, toddlers, older, Total, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 

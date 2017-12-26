@@ -1,8 +1,11 @@
 source("LoadDependencies.R")
+source("Config.R")
+
 source("ReorderColumns.R")
 source("RemoveStepProcedures.R")
 source("ImportCleanSave.R")
 source("FilterBy.R")
+
 source("TotalsTable.R")
 source("AdultsPedsTable.R")
 source("AgeGroupsTable.R")
@@ -13,5 +16,6 @@ source("ProceduresTable.R")
 source("PlotProcedures.R")
 source("RedoTable.R")
 source("SurgeonTable.R")
+
 source("WriteToExcel.R")
 source("CreateTemplateFrom.R")

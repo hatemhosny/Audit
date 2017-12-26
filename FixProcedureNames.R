@@ -8,7 +8,9 @@ FixProcedureNames <- function(df) {
     c("Anomalous Systemic Venous Drainage Repair", "Systemic Venous Drainage Repair"),
     c("Valve sparing Aortic Root Replacement", "Valve-sparing Aortic Root"),
     c("Homograft Aortic Root Replacement", "Homograft Aortic Root"),
-    c("Pulmonary Trans annular Patch", "Pulmonary Trans-annular Patch")
+    c("Pulmonary Trans annular Patch", "Pulmonary Trans-annular Patch"),
+    c("Chest Closure", "Delayed Chest Closure"),
+    c("Atrial switch Mustard", "Atrial switch (Mustard)")
   )
 
   for (fix in procedureFixes) {

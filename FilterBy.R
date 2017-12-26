@@ -95,6 +95,7 @@ GetGroup <- function(df, year, filters = list(), apply.filters="and") {
       nrow()
   }
   group[13] <- sum(group)
+  group[14] <- round(mean(group[1:12]), digits = 1)
 
   group
 
@@ -124,6 +125,7 @@ GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and") {
       nrow()
   }
   group["Total"] <- sum(group)
+  group["Mean"] <- round(mean(group[1:4]), digits = 1)
 
   group
 
