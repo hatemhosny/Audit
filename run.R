@@ -2,8 +2,6 @@ rm(list = ls())
 source("SourceScripts.R")
 LoadDependencies(c("dplyr", "xlsx", "lubridate", "circlize"))
 
-cat("\014")
-
 raw.data.file <- "../data/data.csv"
 clean.data.file <- "../data/data-clean.csv"
 output.file <- "../output/audit.xlsx"
