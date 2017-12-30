@@ -25,26 +25,20 @@ FilterIsolated <- function(df, x, val=TRUE, prefix="Procedures..choice.") {
   df
 }
 
-FilterByYear <- function(df, year) {
+FilterByYear <- function(df, year, date.filter = "Date.of.Operation") {
   start.date <- as.Date(paste(year, "01", "01", sep = "-"))
   end.date <- as.Date(paste(year, "12", "31", sep = "-"))
-  patients <- subset(df,
-                     as.Date(Date.of.Operation) >= start.date &
-                       as.Date(Date.of.Operation) <= end.date
-  )
+  df[df[[date.filter]] >= start.date & df[[date.filter]] <= end.date ,]
 }
 
-FilterByMonth <- function(df, year, month) {
+FilterByMonth <- function(df, year, month, date.filter = "Date.of.Operation") {
   start.date <- as.Date(paste(year, month, "01", sep = "-"))
   end.date <- as.Date(paste(year, month, days_in_month(start.date), sep = "-"))
-  patients <- subset(df,
-                     as.Date(Date.of.Operation) >= start.date &
-                       as.Date(Date.of.Operation) <= end.date
-  )
+  df[df[[date.filter]] >= start.date & df[[date.filter]] <= end.date ,]
 }
 
 
-FilterByQuarter <- function(df, year, quarter) {
+FilterByQuarter <- function(df, year, quarter, date.filter = "Date.of.Operation") {
 
     if (quarter == "Q1") {
     startMonth <- 1
@@ -64,15 +58,11 @@ FilterByQuarter <- function(df, year, quarter) {
 
   start.date <- as.Date(paste(year, startMonth, "01", sep = "-"))
   end.date <- as.Date(paste(year, endMonth, days_in_month(endMonthDate), sep = "-"))
-
-  patients <- subset(df,
-                     as.Date(Date.of.Operation) >= start.date &
-                       as.Date(Date.of.Operation) <= end.date
-  )
+  df[df[[date.filter]] >= start.date & df[[date.filter]] <= end.date ,]
 }
 
 
-GetGroup <- function(df, year, filters = list(), apply.filters="and") {
+GetGroup <- function(df, year, filters = list(), apply.filters="and", ...) {
 
   group <- c()
   for (month in 1:12) {
@@ -91,7 +81,7 @@ GetGroup <- function(df, year, filters = list(), apply.filters="and") {
       }
     }
     group[month] <- filtered.df %>%
-      FilterByMonth(year, month) %>%
+      FilterByMonth(year, month, ...) %>%
       nrow()
   }
   group[13] <- sum(group)
@@ -101,7 +91,7 @@ GetGroup <- function(df, year, filters = list(), apply.filters="and") {
 
 }
 
-GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and") {
+GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and", ...) {
 
   group <- c()
   for (quarter in c("Q1", "Q2", "Q3", "Q4")) {
@@ -121,7 +111,7 @@ GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and") {
     }
 
     group[quarter] <- filtered.df %>%
-      FilterByQuarter(year, quarter) %>%
+      FilterByQuarter(year, quarter, ...) %>%
       nrow()
   }
   group["Total"] <- sum(group)
@@ -132,7 +122,7 @@ GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and") {
 }
 
 
-GetGroupMean <- function(df, year, filters = list(), col, apply.filters="and") {
+GetGroupMean <- function(df, year, filters = list(), col, apply.filters="and", ...) {
 
   is.nan.data.frame <- function(x) {
     do.call(cbind, lapply(x, is.nan))
@@ -156,7 +146,7 @@ GetGroupMean <- function(df, year, filters = list(), col, apply.filters="and") {
     }
 
     filtered.df <- filtered.df %>%
-      FilterByMonth(year, month)
+      FilterByMonth(year, month, ...)
 
     group[month] <- filtered.df[[col]] %>%
       as.numeric() %>%

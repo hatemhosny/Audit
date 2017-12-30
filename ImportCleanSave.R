@@ -74,7 +74,7 @@ ImportCleanSave <- function(inputFile, outputFile) {
     df
   }
 
-  print(paste("Importing and cleaning data from:", inputFile))
+  cat("Importing and cleaning data from:", inputFile, "\n")
 
   df <- read.csv(inputFile, stringsAsFactors = FALSE) %>%
     fixEncoding() %>%
@@ -85,5 +85,6 @@ ImportCleanSave <- function(inputFile, outputFile) {
     RemoveStepProcedures() %>%
     createIndex() %>%
     ReorderColumns() %>%
+    FixMortality() %>%
     write.csv(outputFile, row.names=FALSE)
 }

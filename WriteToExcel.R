@@ -3,13 +3,13 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
 
   createOrLoadWorkbook <- function(file) {
     if(file.exists(file)){
-      print(paste("Updating file:", file))
+      cat("Updating file:", file, " ... ")
       wb <- loadWorkbook(file)
     } else if(file.exists(template)){
-      print(paste("Using template:", template, ", to write file:", file))
+      cat("Using template:", template, ", to write file:", file, " ... ")
       wb <- loadWorkbook(template)
     } else {
-      print(paste("Creating a new excel file:", file))
+      cat("Creating a new excel file:", file, " ... ")
       wb <- createWorkbook(type="xlsx")
     }
     wb
@@ -86,7 +86,7 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
 
     for (year in years) {
 
-      addDataFrame(fn(data, year, ...), workSheet, startRow = nextRow,
+      addDataFrame(fn(df, year, ...), workSheet, startRow = nextRow,
                    colnamesStyle = COLNAMES_STYLE, rownamesStyle = ROWNAMES_STYLE)
       addDataFrame(as.data.frame(year), workSheet, startRow = nextRow,
                    col.names=FALSE, row.names=FALSE, colStyle=HEADER_STYLE)
@@ -97,4 +97,5 @@ WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, tit
 
   autoSizeColumn(workSheet, colIndex=1)
   saveWorkbook(wb, file)
+  cat("Done!", "\n")
 }

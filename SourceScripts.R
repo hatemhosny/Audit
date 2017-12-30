@@ -3,6 +3,7 @@ source("Config.R")
 
 source("ReorderColumns.R")
 source("RemoveStepProcedures.R")
+source("FixMortality.R")
 source("ImportCleanSave.R")
 source("FilterBy.R")
 

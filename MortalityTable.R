@@ -23,4 +23,7 @@ distinct.mortality <- mortality %>%
 
 
 distinct.mortality.2017 <- distinct.mortality %>%
-  FilterByYear(2017)
+    FilterByYear(2017)
+
+data$New.Mortality <- distinct.mortality[match(data$Record.ID, distinct.mortality$Record.ID), "Mortality"]
+data$New.Mortality[is.na(data$New.Mortality)] <- FALSE
