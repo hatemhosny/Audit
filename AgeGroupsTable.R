@@ -38,9 +38,12 @@ AgeGroupsTable <- function(df, year, interval = "month") {
 
   Total <- neonates + infants + toddlers + older
 
-  ageGroupsTable <- data.frame(neonates, infants, toddlers, older, Total, row.names = usedInterval) %>%
+  Table <- data.frame(neonates, infants, toddlers, older, Total, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 
-  ageGroupsTable
+  row.names(Table) <- row.names(Table) %>%
+    gsub(pattern = ".", replacement = " ", fixed = TRUE)
+
+  Table
 }

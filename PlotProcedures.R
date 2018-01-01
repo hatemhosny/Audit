@@ -1,6 +1,3 @@
-source("ProcedureGroups.R")
-source("FixProcedureNames.R")
-
 PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in", pointsize=12) {
 
   GetProcedureAssociations <- function(df, prefix = "Procedures..choice.") {

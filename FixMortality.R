@@ -28,4 +28,5 @@ FixMortality <- function(df) {
 	df$Cause.of.mortality.[is.na(df$Cause.of.mortality.)] <- ""
 
   df
+
 }

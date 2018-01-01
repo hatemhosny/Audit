@@ -1,5 +1,3 @@
-source("FixProcedureNames.R")
-
 ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choice.") {
 
   months <- Config$Months.Total.Mean

@@ -15,8 +15,12 @@ TotalsTable <- function(df, year, interval = "month", allDf = df) {
   Total <- getGroupFn(df, year, TotalsFilter)
 
   MortalityFilter <- list(list("Mortality", TRUE), list("Date.of.mortality.", "", "neq"))
-  Mortality <- getGroupFn(allDf, year, MortalityFilter, date.filter = "Date.of.mortality.")
-  # Mortality <- getGroupFn(df, year, MortalityFilter) # filters by date of operation
+
+  # use date of operation
+  Mortality <- getGroupFn(allDf, year, MortalityFilter)
+
+  # use date of mortality
+  # Mortality <- getGroupFn(df, year, MortalityFilter, date.filter = "Date.of.mortality.")
 
   MortalityPercent <- round(Mortality/Total*100, digits = 1)
 
@@ -26,5 +30,3 @@ TotalsTable <- function(df, year, interval = "month", allDf = df) {
 
   totalsTable
 }
-
-

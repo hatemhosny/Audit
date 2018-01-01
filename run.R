@@ -13,6 +13,22 @@ operations <- allOperations %>%
   FilterBy("Procedures..choice.Exploration.for.bleeding.", FALSE) %>%
   select(-Procedures..choice.Exploration.for.bleeding.)
 
+
+cat("Creating plots...", "\n")
+
+operations %>%
+  FilterBy("Section", "Adults") %>%
+  FilterByYear(2017) %>%
+  WriteToExcel(output.file, "Plots", PlotProcedures, isPlot=TRUE
+               , title="Adults 2017", section="Adults")
+
+operations %>%
+  FilterBy("Section", "Pediatrics") %>%
+  FilterByYear(2017) %>%
+  WriteToExcel(output.file, "Plots", PlotProcedures, isPlot=TRUE
+               , title="Pediatrics 2017", section="Pediatrics", append=TRUE)
+
+
 cat("Creating reports...", "\n")
 
 # 2017
@@ -58,19 +74,17 @@ WriteToExcel(operations, output.file, "Redo", RedoTable, interval="quarter", app
 WriteToExcel(operations, output.file, "Surgeon", SurgeonTable)
 WriteToExcel(operations, output.file, "Surgeon", SurgeonTable, interval="quarter", append=TRUE)
 
-cat("Creating plots...", "\n")
+WriteToExcel(operations, output.file, "Adults-Peds Mortality", AdultsPedsMortalityTable,
+             interval="quarter", allDf=allOperations)
 
-operations %>%
-  FilterBy("Section", "Adults") %>%
-  FilterByYear(2017) %>%
-  WriteToExcel(output.file, "Plots", PlotProcedures, isPlot=TRUE
-               , title="Adults 2017", section="Adults")
+WriteToExcel(operations, output.file, "Ped. Age Groups Mortality", AgeGroupsMortalityTable,
+             interval="quarter", allDf=allOperations)
 
-operations %>%
-  FilterBy("Section", "Pediatrics") %>%
-  FilterByYear(2017) %>%
-  WriteToExcel(output.file, "Plots", PlotProcedures, isPlot=TRUE
-               , title="Pediatrics 2017", section="Pediatrics", append=TRUE)
+WriteToExcel(allOperations, output.file, "Procedure Mortality", ProcedureMortalityTable,
+             2017, interval="quarter")
+
+WriteToExcel(operations, output.file, "Surgeon Mortality", SurgeonMortalityTable,
+             interval="quarter", allDf=allOperations)
 
 
 cat("Done!", "\n")
