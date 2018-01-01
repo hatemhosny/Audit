@@ -20,12 +20,15 @@ SurgeonTable <- function(df, year, interval = "month") {
   Ahmed_Mahgoub <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Mahgoub")))
 
 
-  surgeonTable <- data.frame(Magdi_Yacoub, Carin_van_Doorn, Ahmed_Afifi, Ahmed_Shazly,
-                             Hatem_Hosny, Walid_Simry, Ahmed_Mahgoub, row.names = usedInterval) %>%
+  Table <- data.frame(Magdi.Yacoub, Carin.van.Doorn, Ahmed.Afifi, Ahmed.Shazly,
+                      Hatem.Hosny, Walid.Simry, Ahmed.Mahgoub, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 
-  surgeonTable
+  row.names(Table) <- row.names(Table) %>%
+    gsub(pattern = ".", replacement = " ", fixed = TRUE)
+
+  Table
 }
 
 

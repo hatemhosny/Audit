@@ -71,8 +71,11 @@ WriteToExcel(notRedo, output.file, "Non-redo Procedures", ProceduresTable)
 WriteToExcel(operations, output.file, "Redo", RedoTable)
 WriteToExcel(operations, output.file, "Redo", RedoTable, interval="quarter", append=TRUE)
 
-WriteToExcel(operations, output.file, "Surgeon", SurgeonTable)
-WriteToExcel(operations, output.file, "Surgeon", SurgeonTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, output.file, "Surgeons", SurgeonTable)
+WriteToExcel(operations, output.file, "Surgeons", SurgeonTable, interval="quarter", append=TRUE)
+
+WriteToExcel(operations, output.file, "Trainers", TrainersTable)
+WriteToExcel(operations, output.file, "Trainers", TrainersTable, interval="quarter", append=TRUE)
 
 WriteToExcel(operations, output.file, "Adults-Peds Mortality", AdultsPedsMortalityTable,
              interval="quarter", allDf=allOperations)
