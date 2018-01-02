@@ -11,13 +11,13 @@ SurgeonTable <- function(df, year, interval = "month") {
     getGroupFn <- GetGroup
   }
 
-  Magdi_Yacoub <- getGroupFn(df, year, list(list("Surgeon.1", "Prof. Magdi Yacoub")))
-  Carin_van_Doorn <- getGroupFn(df, year, list(list("Surgeon.1", "Carin van Doorn")))
-  Ahmed_Afifi <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Afifi")))
-  Ahmed_Shazly <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Shazly")))
-  Hatem_Hosny <- getGroupFn(df, year, list(list("Surgeon.1", "Hatem Hosny")))
-  Walid_Simry <- getGroupFn(df, year, list(list("Surgeon.1", "Walid Simry")))
-  Ahmed_Mahgoub <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Mahgoub")))
+  Magdi.Yacoub <- getGroupFn(df, year, list(list("Surgeon.1", "Prof. Magdi Yacoub")))
+  Carin.van.Doorn <- getGroupFn(df, year, list(list("Surgeon.1", "Carin van Doorn")))
+  Ahmed.Afifi <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Afifi")))
+  Ahmed.Shazly <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Shazly")))
+  Hatem.Hosny <- getGroupFn(df, year, list(list("Surgeon.1", "Hatem Hosny")))
+  Walid.Simry <- getGroupFn(df, year, list(list("Surgeon.1", "Walid Simry")))
+  Ahmed.Mahgoub <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Mahgoub")))
 
 
   Table <- data.frame(Magdi.Yacoub, Carin.van.Doorn, Ahmed.Afifi, Ahmed.Shazly,
