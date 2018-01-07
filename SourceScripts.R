@@ -24,6 +24,7 @@ source("AdultsPedsMortalityTable.R")
 source("AgeGroupsMortalityTable.R")
 source("ProcedureMortalityTable.R")
 source("SurgeonMortalityTable.R")
+source("PlotSurgeonProcedures.R")
 
 source("WriteToExcel.R")
 source("CreateTemplateFrom.R")
