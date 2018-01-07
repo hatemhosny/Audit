@@ -65,3 +65,9 @@ write.csv(others, "../output/other.csv", row.names = FALSE)
 
 str(others)
 
+
+operations %>%
+  FilterByYear(2017) %>%
+  FilterBy("Surgeon.1", "Magdi Yacoub") %>%
+  WriteToExcel("../output/surgeons.xlsx", "Magdi Yacoub", PlotProcedures, isPlot=TRUE)
+

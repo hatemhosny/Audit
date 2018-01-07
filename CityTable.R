@@ -24,7 +24,7 @@ CityTable <- function(df, year, interval = "month") {
     list("City", "Red Sea"),
     list("City", "Menia")
   )
-  Upper_Egypt <- getGroupFn(df, year, UpperEgyptFilter, "or")
+  Upper.Egypt <- getGroupFn(df, year, UpperEgyptFilter, "or")
 
   CairoFilter <- list(
     list("City", "Cairo"),
@@ -53,16 +53,19 @@ CityTable <- function(df, year, interval = "month") {
     list("City", "Suez"),
     list("City", "Other")
   )
-  Rest_of_Egypt <- getGroupFn(df, year, RestOfEgyptFilter, "or")
+  Rest.of.Egypt <- getGroupFn(df, year, RestOfEgyptFilter, "or")
 
   NonEgyptianFilter <- list(list("City", "Not Egyptian"))
-  Non_Egyptian <- getGroupFn(df, year, NonEgyptianFilter, "or")
+  Non.Egyptian <- getGroupFn(df, year, NonEgyptianFilter, "or")
 
-  Total <- Aswan + Upper_Egypt + Cairo + Rest_of_Egypt + Non_Egyptian
+  Total <- Aswan + Upper.Egypt + Cairo + Rest.of.Egypt + Non.Egyptian
 
-  cityTable <- data.frame(Aswan, Upper_Egypt, Cairo, Rest_of_Egypt, Non_Egyptian, Total, row.names = usedInterval) %>%
+  Table <- data.frame(Aswan, Upper.Egypt, Cairo, Rest.of.Egypt, Non.Egyptian, Total, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 
-  cityTable
+  row.names(Table) <- row.names(Table) %>%
+    gsub(pattern = ".", replacement = " ", fixed = TRUE)
+
+  Table
 }

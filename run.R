@@ -64,15 +64,31 @@ WriteToExcel(operations, output.file, "Week days", WeekDayTable)
 WriteToExcel(operations, output.file, "Procedures", ProceduresTable)
 WriteToExcel(operations, output.file, "Procedures", ProceduresTable, interval="quarter", append=TRUE)
 
-notRedo <- operations %>%
-  FilterBy("Redo.Operation", FALSE)
-WriteToExcel(notRedo, output.file, "Non-redo Procedures", ProceduresTable)
+operations %>%
+  FilterBy("Section", "Adults") %>%
+  WriteToExcel(output.file, "Adult Procedures", ProceduresTable, interval="quarter")
+
+operations %>%
+  FilterBy("Section", "Pediatrics") %>%
+  WriteToExcel(output.file, "Pediatric Procedures", ProceduresTable, interval="quarter")
+
+operations %>%
+  FilterBy("Redo.Operation", FALSE) %>%
+  WriteToExcel(output.file, "Non-redo Procedures", ProceduresTable)
 
 WriteToExcel(operations, output.file, "Redo", RedoTable)
 WriteToExcel(operations, output.file, "Redo", RedoTable, interval="quarter", append=TRUE)
 
 WriteToExcel(operations, output.file, "Surgeons", SurgeonTable)
 WriteToExcel(operations, output.file, "Surgeons", SurgeonTable, interval="quarter", append=TRUE)
+
+operations %>%
+  FilterBy("Section", "Adults") %>%
+  WriteToExcel(output.file, "Adult Surgeons", SurgeonTable, interval="quarter")
+
+operations %>%
+  FilterBy("Section", "Pediatrics") %>%
+  WriteToExcel(output.file, "Pediatric Surgeons", SurgeonTable, interval="quarter")
 
 WriteToExcel(operations, output.file, "Trainers", TrainersTable)
 WriteToExcel(operations, output.file, "Trainers", TrainersTable, interval="quarter", append=TRUE)
@@ -88,6 +104,7 @@ WriteToExcel(allOperations, output.file, "Procedure Mortality", ProcedureMortali
 
 WriteToExcel(operations, output.file, "Surgeon Mortality", SurgeonMortalityTable,
              interval="quarter", allDf=allOperations)
+
 
 
 cat("Done!", "\n")

@@ -13,19 +13,22 @@ RedoTable <- function(df, year, interval = "month") {
 
 
   FirstOperationFilter <- list(list("Redo.Operation", FALSE))
-  First_Operation <- getGroupFn(df, year, FirstOperationFilter)
+  First.Operation <- getGroupFn(df, year, FirstOperationFilter)
 
-  Redo_OperationFilter <- list(list("Redo.Operation", TRUE))
-  Redo_Operation <- getGroupFn(df, year, Redo_OperationFilter)
+  Redo.OperationFilter <- list(list("Redo.Operation", TRUE))
+  Redo.Operation <- getGroupFn(df, year, Redo.OperationFilter)
 
 
-  Total <- First_Operation + Redo_Operation
+  Total <- First.Operation + Redo.Operation
 
-  redoTable <- data.frame(First_Operation, Redo_Operation, Total, row.names = usedInterval) %>%
+  Table <- data.frame(First.Operation, Redo.Operation, Total, row.names = usedInterval) %>%
     t() %>%
     as.data.frame()
 
-  redoTable
+  row.names(Table) <- row.names(Table) %>%
+    gsub(pattern = ".", replacement = " ", fixed = TRUE)
+
+  Table
 }
 
 
