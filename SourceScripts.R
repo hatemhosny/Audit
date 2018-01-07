@@ -1,6 +1,7 @@
 source("LoadDependencies.R")
 source("Config.R")
 
+source("ExportFromRedcap.R")
 source("ReorderColumns.R")
 source("RemoveStepProcedures.R")
 source("FixMortality.R")
