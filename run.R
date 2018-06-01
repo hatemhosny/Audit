@@ -5,12 +5,14 @@ LoadDependencies(c("dplyr", "xlsx", "lubridate", "circlize", "RCurl"))
 files <- list(
   raw.data = "../data/data.csv",
   clean.data = "../data/data-clean.csv",
-  output = "../output/audit-2018-Q1.xlsx"
+  output = "../output/audit-2018-Q1.xlsx",
+  output.plots =  "../output/audit-2018-Q1-plots.xlsx"
 )
 
 Config$Years <- 2009:2018
 Config$Quarter <- "Q1"
-current.Year <- last(Config$Years)
+this.year <- last(Config$Years)
+last.Year <- this.year - 1
 
 # ExportFromRedcap(files$raw.data)
 # ImportCleanSave(files$raw.data, files$clean.data)
@@ -22,36 +24,67 @@ operations <- allOperations %>%
   FilterBy("Procedures..choice.Exploration.for.bleeding.", FALSE)
 
 
-# cat("Creating plots...", "\n")
-#
-# operations %>%
-#   FilterBy("Section", "Adults") %>%
-#   # FilterByYear(2018) %>%
-#   FilterByQuarter(2018, "Q1") %>%
-#   WriteToExcel(files$output, "Plots", PlotProcedures, isPlot=TRUE
-#                , title="Adults 2018-Q1", section="Adults")
-#
-# operations %>%
-#   FilterBy("Section", "Pediatrics") %>%
-#   # FilterByYear(2018) %>%
-#   FilterByQuarter(2018, "Q1") %>%
-#   WriteToExcel(files$output, "Plots", PlotProcedures, isPlot=TRUE
-#                , title="Pediatrics 2018-Q1", section="Pediatrics", append=TRUE)
+
+tables <- list(
+  TotalsTable,
+  AdultsPedsTable,
+  AgeGroupsTable,
+  GenderTable,
+  CityTable,
+  WeekDayTable,
+  ProceduresTable,
+  RedoTable,
+  SurgeonTable,
+  TrainersTable,
+  AdultsPedsMortalityTable,
+  AgeGroupsMortalityTable,
+  ProcedureMortalityTable,
+  SurgeonMortalityTable
+)
+
+cat("Creating plots...", "\n")
+
+operations %>%
+  FilterBy("Section", "Adults") %>%
+  # FilterByYear(2017) %>%
+  FilterByQuarter(2018, "Q1") %>%
+  WriteToExcel(files$output.plots, "Plots", PlotProcedures, isPlot=TRUE
+               , title="Adults 2018-Q1", section="Adults", template="")
+
+operations %>%
+  FilterBy("Section", "Pediatrics") %>%
+  # FilterByYear(2017) %>%
+  FilterByQuarter(2018, "Q1") %>%
+  WriteToExcel(files$output.plots, "Plots", PlotProcedures, isPlot=TRUE
+               , title="Pediatrics 2018-Q1", section="Pediatrics", template="", append=TRUE)
 
 
 cat("Creating reports...", "\n")
 
-# Current Year
-WriteToExcel(operations, files$output, "Year", TotalsTable, current.Year, allDf = allOperations)
-WriteToExcel(operations, files$output, "Year", AdultsPedsTable, current.Year, append=TRUE)
-WriteToExcel(operations, files$output, "Year", AgeGroupsTable, current.Year, append=TRUE)
-WriteToExcel(operations, files$output, "Year", GenderTable, current.Year, append=TRUE)
-WriteToExcel(operations, files$output, "Year", ProceduresTable, current.Year, append=TRUE)
-WriteToExcel(operations, files$output, "Year-Q", TotalsTable, current.Year, allDf = allOperations, interval="quarter")
-WriteToExcel(operations, files$output, "Year-Q", AdultsPedsTable, current.Year, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "Year-Q", AgeGroupsTable, current.Year, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "Year-Q", GenderTable, current.Year, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "Year-Q", ProceduresTable, current.Year, interval="quarter", append=TRUE)
+# This Year
+WriteToExcel(operations, files$output, "This Year", TotalsTable, this.year, allDf = allOperations)
+WriteToExcel(operations, files$output, "This Year", AdultsPedsTable, this.year, append=TRUE)
+WriteToExcel(operations, files$output, "This Year", AgeGroupsTable, this.year, append=TRUE)
+WriteToExcel(operations, files$output, "This Year", GenderTable, this.year, append=TRUE)
+WriteToExcel(operations, files$output, "This Year", ProceduresTable, this.year, append=TRUE)
+WriteToExcel(operations, files$output, "This Year-Q", TotalsTable, this.year, allDf = allOperations, interval="quarter")
+WriteToExcel(operations, files$output, "This Year-Q", AdultsPedsTable, this.year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "This Year-Q", AgeGroupsTable, this.year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "This Year-Q", GenderTable, this.year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "This Year-Q", ProceduresTable, this.year, interval="quarter", append=TRUE)
+
+
+# Last Year
+WriteToExcel(operations, files$output, "Last Year", TotalsTable, last.Year, allDf = allOperations)
+WriteToExcel(operations, files$output, "Last Year", AdultsPedsTable, last.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Last Year", AgeGroupsTable, last.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Last Year", GenderTable, last.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Last Year", ProceduresTable, last.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Last Year-Q", TotalsTable, last.Year, allDf = allOperations, interval="quarter")
+WriteToExcel(operations, files$output, "Last Year-Q", AdultsPedsTable, last.Year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Last Year-Q", AgeGroupsTable, last.Year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Last Year-Q", GenderTable, last.Year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Last Year-Q", ProceduresTable, last.Year, interval="quarter", append=TRUE)
 
 
 # All years
@@ -118,6 +151,15 @@ WriteToExcel(operations, files$output, "Surgeon Mortality", SurgeonMortalityTabl
 
 
 
+cat("Creating summary tables", "\n")
+
+WriteToExcel(operations, files$output, "Summary", SummaryTable, funs=tables, isSummary=TRUE,
+             allDf=allOperations)
+
+WriteToExcel(operations, files$output, "Summary-Q", SummaryTable, funs=tables, isSummary=TRUE,
+             allDf=allOperations, interval="quarter")
+
+
 cat("Done!", "\n")
 
-# CreateTemplateFrom("../output/audit-2018-Q1.xlsx")
+# CreateTemplateFrom(files$output)

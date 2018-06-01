@@ -1,4 +1,4 @@
-WeekDayTable <- function(df, year, interval = "month") {
+WeekDayTable <- function(df, year, interval = "month", allDf = df) {
 
   months <-   months <- Config$Months.Mean
 

@@ -1,4 +1,4 @@
-TrainersTable <- function(df, year, interval = "month") {
+TrainersTable <- function(df, year, interval = "month", allDf = df) {
 
   months <- Config$Months.Total.Mean
   quarters <- Config$Quarters.Total.Mean

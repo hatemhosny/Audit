@@ -1,4 +1,4 @@
-GenderTable <- function(df, year, interval = "month") {
+GenderTable <- function(df, year, interval = "month", allDf = df) {
 
   months <- Config$Months.Total.Mean
   quarters <- Config$Quarters.Total.Mean

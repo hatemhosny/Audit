@@ -1,5 +1,3 @@
-source("FilterBy.R")
-
 GetProcedureAssociations <- function(df, prefix = "Procedures..choice.") {
 
   procs <- names(select(df, starts_with(prefix)))

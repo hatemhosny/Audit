@@ -9,6 +9,7 @@ source("ImportCleanSave.R")
 source("FilterBy.R")
 source("ProcedureGroups.R")
 source("FixProcedureNames.R")
+source("GetProcedureAssociations.R")
 
 source("TotalsTable.R")
 source("AdultsPedsTable.R")
@@ -26,6 +27,8 @@ source("AgeGroupsMortalityTable.R")
 source("ProcedureMortalityTable.R")
 source("SurgeonMortalityTable.R")
 source("PlotSurgeonProcedures.R")
+
+source("SummaryTable.R")
 
 source("WriteToExcel.R")
 source("CreateTemplateFrom.R")

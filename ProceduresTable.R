@@ -1,4 +1,4 @@
-ProceduresTable <- function(df, year, interval="month", prefix="Procedures..choice.") {
+ProceduresTable <- function(df, year, interval="month", allDf = df, prefix="Procedures..choice.") {
 
   months <- Config$Months.Total.Mean
   quarters <- Config$Quarters.Total.Mean

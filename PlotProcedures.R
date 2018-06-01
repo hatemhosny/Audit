@@ -1,24 +1,5 @@
 PlotProcedures <- function(df, section, width=10, height=10, res=800, units="in", pointsize=12) {
 
-  GetProcedureAssociations <- function(df, prefix = "Procedures..choice.") {
-
-    procs <- names(select(df, starts_with(prefix)))
-
-    relation <- data.frame(from=character(), to=character(), weight=integer(), stringsAsFactors=FALSE)
-    for(i in 1:length(procs)) {
-      x <- i
-      filter1 <- FilterBy(df, procs[i], TRUE)
-      for(j in x:length(procs)) {
-        rowCount <- nrow(FilterBy(filter1, procs[j], TRUE))
-        relation <- rbind(relation, data.frame(from=procs[i], to=procs[j], weight=rowCount))
-      }
-
-      relation[relation$from == procs[i] & relation$to == procs[i],3] <-
-        nrow(FilterIsolated(df, procs[i]))
-    }
-    relation
-  }
-
   highlightGroup <- function(groupName, sectionGroups) {
     colors <- c("#0072bb", "#00A1FF", "#75CCFF", "#6874e8", "#4da1a9", "#477998", "#d36135",
                 "#b84a62", "#bf1363")

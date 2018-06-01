@@ -1,4 +1,4 @@
-WriteToExcel <- function(df, file, sheet, fn, years=Config$Years, isPlot=FALSE, title="",
+WriteToExcel <- function(df, file, sheet, fn, years=Config$Years, isPlot=FALSE, isSummary=FALSE, title="",
                          append=FALSE, template=Config$Default.Template, ...) {
 
   createOrLoadWorkbook <- function(file) {
@@ -79,6 +79,12 @@ WriteToExcel <- function(df, file, sheet, fn, years=Config$Years, isPlot=FALSE, 
     addPicture(image, workSheet, scale = 1, startRow = nextRow+1, startColumn = 1)
 
     res<-file.remove(image)
+
+
+  } else if (isSummary) {
+
+    addDataFrame(fn(df, years, ...), workSheet, startRow = nextRow,
+                 colnamesStyle = COLNAMES_STYLE, rownamesStyle = ROWNAMES_STYLE)
 
   } else {
 
