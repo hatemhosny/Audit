@@ -22,7 +22,7 @@ TotalsTable <- function(df, year, interval = "month", allDf = df) {
   # use date of mortality
   # Mortality <- getGroupFn(df, year, MortalityFilter, date.filter = "Date.of.mortality.")
 
-  Mortality.Percent <- round(Mortality/Total*100, digits = 1)
+  Mortality.Percent <- round(Mortality/Total*100, digits = 1) %>% convertNANtoZero()
 
   Table <- data.frame(Total, Mortality, Mortality.Percent, row.names = usedInterval) %>%
     t() %>%

@@ -1,5 +1,5 @@
-WriteToExcel <- function(df, file, sheet, fn, years=2009:2017, isPlot=FALSE, title="",
-                         append=FALSE, template="template.xlsx", ...) {
+WriteToExcel <- function(df, file, sheet, fn, years=Config$Years, isPlot=FALSE, title="",
+                         append=FALSE, template=Config$Default.Template, ...) {
 
   createOrLoadWorkbook <- function(file) {
     if(file.exists(file)){

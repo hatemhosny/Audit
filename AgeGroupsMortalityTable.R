@@ -30,7 +30,8 @@ AgeGroupsMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Neonates.Mortality <- getGroupFn(allDf, year, NeonatesMortalityFilter)
-  Neonates.Mortality.Percent <- round(Neonates.Mortality/Neonates*100, digits = 1)
+  Neonates.Mortality.Percent <- round(Neonates.Mortality/Neonates*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   InfantsFilter <- list(
@@ -43,7 +44,8 @@ AgeGroupsMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                  list("Mortality", TRUE),
                                  list("Date.of.mortality.", "", "neq"))
   Infants.Mortality <- getGroupFn(allDf, year, InfantsMortalityFilter)
-  Infants.Mortality.Percent <- round(Infants.Mortality/Infants*100, digits = 1)
+  Infants.Mortality.Percent <- round(Infants.Mortality/Infants*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   ToddlersFilter <- list(
@@ -56,7 +58,8 @@ AgeGroupsMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                  list("Mortality", TRUE),
                                  list("Date.of.mortality.", "", "neq"))
   Toddlers.Mortality <- getGroupFn(allDf, year, ToddlersMortalityFilter)
-  Toddlers.Mortality.Percent <- round(Toddlers.Mortality/Toddlers*100, digits = 1)
+  Toddlers.Mortality.Percent <- round(Toddlers.Mortality/Toddlers*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   ChildrenFilter <- list(list("days.from.operation", 730, "mt"))
@@ -65,7 +68,8 @@ AgeGroupsMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                   list("Mortality", TRUE),
                                   list("Date.of.mortality.", "", "neq"))
   Children.Mortality <- getGroupFn(allDf, year, ChildrenMortalityFilter)
-  Children.Mortality.Percent <- round(Children.Mortality/Children*100, digits = 1)
+  Children.Mortality.Percent <- round(Children.Mortality/Children*100, digits = 1) %>%
+    convertNANtoZero()
 
   Table <- data.frame(Neonates, Neonates.Mortality, Neonates.Mortality.Percent,
                       Infants, Infants.Mortality, Infants.Mortality.Percent,

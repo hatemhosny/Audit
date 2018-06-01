@@ -38,26 +38,44 @@ FilterByMonth <- function(df, year, month, date.filter = "Date.of.Operation") {
 }
 
 
-FilterByQuarter <- function(df, year, quarter, date.filter = "Date.of.Operation") {
+FilterByQuarter <- function(df, year, quarter, inclusive = TRUE, date.filter = "Date.of.Operation") {
 
-    if (quarter == "Q1") {
+  end.year <- last(Config$Years)
+  end.quarter <- Config$Quarter
+
+  if (quarter == "Q1") {
     startMonth <- 1
     endMonth <- 3
   } else if (quarter == "Q2") {
     startMonth <- 4
     endMonth <- 6
+
+    if (inclusive == TRUE && (last(year) < end.year | end.quarter == "Q2" | end.quarter == "Q3" | end.quarter == "Q4")) {
+      startMonth <- 1
+    }
+
   } else if (quarter == "Q3") {
     startMonth <- 7
     endMonth <- 9
+
+    if (inclusive == TRUE && (last(year) < end.year | end.quarter == "Q3" | end.quarter == "Q4")) {
+      startMonth <- 1
+    }
+
   } else if (quarter == "Q4") {
     startMonth <- 10
     endMonth <- 12
+
+    if (inclusive == TRUE && (last(year) < end.year | end.quarter == "Q4")) {
+      startMonth <- 1
+    }
+
   }
 
-  endMonthDate <- as.Date(paste(year, endMonth, "01", sep = "-"))
+  endMonthDate <- as.Date(paste(last(year), endMonth, "01", sep = "-"))
 
-  start.date <- as.Date(paste(year, startMonth, "01", sep = "-"))
-  end.date <- as.Date(paste(year, endMonth, days_in_month(endMonthDate), sep = "-"))
+  start.date <- as.Date(paste(first(year), startMonth, "01", sep = "-"))
+  end.date <- as.Date(paste(last(year), endMonth, days_in_month(endMonthDate), sep = "-"))
   df[df[[date.filter]] >= start.date & df[[date.filter]] <= end.date ,]
 }
 
@@ -85,13 +103,13 @@ GetGroup <- function(df, year, filters = list(), apply.filters="and", ...) {
       nrow()
   }
   group[13] <- sum(group)
-  group[14] <- round(mean(group[1:12]), digits = 1)
+  group[14] <- getMean(group[1:12])
 
   group
 
 }
 
-GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and", ...) {
+GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and", inclusive = Config$Quarters.Inclusive, ...) {
 
   group <- c()
   for (quarter in c("Q1", "Q2", "Q3", "Q4")) {
@@ -111,11 +129,31 @@ GetGroupByQuarter <- function(df, year, filters = list(), apply.filters="and", .
     }
 
     group[quarter] <- filtered.df %>%
-      FilterByQuarter(year, quarter, ...) %>%
+      FilterByQuarter(year, quarter, inclusive = inclusive, ...) %>%
       nrow()
   }
-  group["Total"] <- sum(group)
-  group["Mean"] <- round(mean(group[1:4]), digits = 1)
+
+  if (inclusive == TRUE) {
+    group["Total"] <- max(group, na.rm = TRUE)
+  } else {
+    group["Total"] <- sum(group)
+  }
+
+
+  if (inclusive == TRUE) {
+    quarters <- c()
+    quarters <- c(quarters, group[1])
+    quarters <- c(quarters, if_else(group[2] > group[1], group[2] - group[1], group[2]))
+    quarters <- c(quarters, if_else(group[3] > group[2], group[3] - group[2], group[3]))
+    quarters <- c(quarters, if_else(group[4] > group[3], group[4] - group[3], group[4]))
+
+    group["Mean"] <- getMean(quarters)
+
+  } else {
+
+    group["Mean"] <- getMean(group[1:4])
+
+  }
 
   group
 
@@ -150,17 +188,37 @@ GetGroupMean <- function(df, year, filters = list(), col, apply.filters="and", .
 
     group[month] <- filtered.df[[col]] %>%
       as.numeric() %>%
-      mean(na.rm=TRUE) %>%
-      round(2)
+      getMean()
   }
 
   group[is.nan.data.frame(group)] <- 0
-  group[13] <- mean(group, na.rm=TRUE) %>% round(2)
+  group[13] <- getMean(group)
 
   group
 
 }
 
+removeZeros <- function(x) {
+  x[x != 0]
+}
+
+convertNANtoZero <- function(x) {
+  if (is.list(x) | is.vector(x) | is.data.frame(x)) {
+    x[is.na(x) | is.nan(x) | is.infinite(x)] <- 0
+  } else if (is.nan(x) | is.infinite(x)) {
+      x <- 0
+  }
+
+  x
+}
+
+getMean <- function(x, digits=0) {
+  x %>%
+    removeZeros() %>%
+    mean(na.rm=TRUE) %>%
+    convertNANtoZero() %>%
+    round(digits)
+}
 
 # Usage:
 # -------------

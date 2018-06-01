@@ -16,14 +16,16 @@ AdultsPedsMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Pediatrics.Mortality <- getGroupFn(allDf, year, PediatricsMortalityFilter)
-  Pediatrics.Mortality.Percent <- round(Pediatrics.Mortality/Pediatrics*100, digits = 1)
+  Pediatrics.Mortality.Percent <- round(Pediatrics.Mortality/Pediatrics*100, digits = 1) %>%
+    convertNANtoZero()
 
   Adults <- getGroupFn(df, year, list(list("Section", "Adults")))
   AdultsMortalityFilter <- list(list("Section", "Adults"),
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Adults.Mortality <- getGroupFn(allDf, year, AdultsMortalityFilter)
-  Adults.Mortality.Percent <- round(Adults.Mortality/Adults*100, digits = 1)
+  Adults.Mortality.Percent <- round(Adults.Mortality/Adults*100, digits = 1) %>%
+    convertNANtoZero()
 
   Table <- data.frame(Adults, Adults.Mortality, Adults.Mortality.Percent,
                       Pediatrics, Pediatrics.Mortality, Pediatrics.Mortality.Percent,

@@ -5,68 +5,75 @@ LoadDependencies(c("dplyr", "xlsx", "lubridate", "circlize", "RCurl"))
 files <- list(
   raw.data = "../data/data.csv",
   clean.data = "../data/data-clean.csv",
-  output = "../output/audit.xlsx"
+  output = "../output/audit-2018-Q1.xlsx"
 )
 
-ExportFromRedcap(files$raw.data)
-ImportCleanSave(files$raw.data, files$clean.data)
+Config$Years <- 2009:2018
+Config$Quarter <- "Q1"
+current.Year <- last(Config$Years)
 
-allOperations <- read.csv(files$clean.data, stringsAsFactors = FALSE)
+# ExportFromRedcap(files$raw.data)
+# ImportCleanSave(files$raw.data, files$clean.data)
+
+allOperations <- read.csv(files$clean.data, stringsAsFactors = FALSE) %>%
+  FilterByQuarter(Config$Years, Config$Quarter)
 
 operations <- allOperations %>%
-  FilterBy("Procedures..choice.Exploration.for.bleeding.", FALSE) %>%
-  select(-Procedures..choice.Exploration.for.bleeding.)
+  FilterBy("Procedures..choice.Exploration.for.bleeding.", FALSE)
 
 
-cat("Creating plots...", "\n")
-
-operations %>%
-  FilterBy("Section", "Adults") %>%
-  FilterByYear(2017) %>%
-  WriteToExcel(files$output, "Plots", PlotProcedures, isPlot=TRUE
-               , title="Adults 2017", section="Adults")
-
-operations %>%
-  FilterBy("Section", "Pediatrics") %>%
-  FilterByYear(2017) %>%
-  WriteToExcel(files$output, "Plots", PlotProcedures, isPlot=TRUE
-               , title="Pediatrics 2017", section="Pediatrics", append=TRUE)
+# cat("Creating plots...", "\n")
+#
+# operations %>%
+#   FilterBy("Section", "Adults") %>%
+#   # FilterByYear(2018) %>%
+#   FilterByQuarter(2018, "Q1") %>%
+#   WriteToExcel(files$output, "Plots", PlotProcedures, isPlot=TRUE
+#                , title="Adults 2018-Q1", section="Adults")
+#
+# operations %>%
+#   FilterBy("Section", "Pediatrics") %>%
+#   # FilterByYear(2018) %>%
+#   FilterByQuarter(2018, "Q1") %>%
+#   WriteToExcel(files$output, "Plots", PlotProcedures, isPlot=TRUE
+#                , title="Pediatrics 2018-Q1", section="Pediatrics", append=TRUE)
 
 
 cat("Creating reports...", "\n")
 
-# 2017
-WriteToExcel(operations, files$output, "2017", TotalsTable, 2017, allDf = allOperations)
-WriteToExcel(operations, files$output, "2017", AdultsPedsTable, 2017, append=TRUE)
-WriteToExcel(operations, files$output, "2017", AgeGroupsTable, 2017, append=TRUE)
-WriteToExcel(operations, files$output, "2017", GenderTable, 2017, append=TRUE)
-WriteToExcel(operations, files$output, "2017", ProceduresTable, 2017, append=TRUE)
-WriteToExcel(operations, files$output, "2017", TotalsTable, 2017, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "2017", AdultsPedsTable, 2017, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "2017", AgeGroupsTable, 2017, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "2017", GenderTable, 2017, interval="quarter", append=TRUE)
-WriteToExcel(operations, files$output, "2017", ProceduresTable, 2017, interval="quarter", append=TRUE)
+# Current Year
+WriteToExcel(operations, files$output, "Year", TotalsTable, current.Year, allDf = allOperations)
+WriteToExcel(operations, files$output, "Year", AdultsPedsTable, current.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Year", AgeGroupsTable, current.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Year", GenderTable, current.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Year", ProceduresTable, current.Year, append=TRUE)
+WriteToExcel(operations, files$output, "Year-Q", TotalsTable, current.Year, allDf = allOperations, interval="quarter")
+WriteToExcel(operations, files$output, "Year-Q", AdultsPedsTable, current.Year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Year-Q", AgeGroupsTable, current.Year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Year-Q", GenderTable, current.Year, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Year-Q", ProceduresTable, current.Year, interval="quarter", append=TRUE)
+
 
 # All years
 WriteToExcel(operations, files$output, "Totals", TotalsTable, allDf = allOperations)
-WriteToExcel(operations, files$output, "Totals", TotalsTable, allDf = allOperations, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Totals-Q", TotalsTable, allDf = allOperations, interval="quarter")
 
 WriteToExcel(operations, files$output, "Adults-Peds", AdultsPedsTable)
-WriteToExcel(operations, files$output, "Adults-Peds", AdultsPedsTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Adults-Peds-Q", AdultsPedsTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Ped. Age Groups", AgeGroupsTable)
-WriteToExcel(operations, files$output, "Ped. Age Groups", AgeGroupsTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Ped. Age Groups-Q", AgeGroupsTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Gender", GenderTable)
-WriteToExcel(operations, files$output, "Gender", GenderTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Gender-Q", GenderTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "City", CityTable)
-WriteToExcel(operations, files$output, "City", CityTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "City-Q", CityTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Week days", WeekDayTable)
 
 WriteToExcel(operations, files$output, "Procedures", ProceduresTable)
-WriteToExcel(operations, files$output, "Procedures", ProceduresTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Procedures-Q", ProceduresTable, interval="quarter")
 
 operations %>%
   FilterBy("Section", "Adults") %>%
@@ -78,13 +85,13 @@ operations %>%
 
 operations %>%
   FilterBy("Redo.Operation", FALSE) %>%
-  WriteToExcel(files$output, "Non-redo Procedures", ProceduresTable)
+  WriteToExcel(files$output, "Non-redo Procedures", ProceduresTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Redo", RedoTable)
-WriteToExcel(operations, files$output, "Redo", RedoTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Redo-Q", RedoTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Surgeons", SurgeonTable)
-WriteToExcel(operations, files$output, "Surgeons", SurgeonTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Surgeons-Q", SurgeonTable, interval="quarter")
 
 operations %>%
   FilterBy("Section", "Adults") %>%
@@ -95,7 +102,7 @@ operations %>%
   WriteToExcel(files$output, "Pediatric Surgeons", SurgeonTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Trainers", TrainersTable)
-WriteToExcel(operations, files$output, "Trainers", TrainersTable, interval="quarter", append=TRUE)
+WriteToExcel(operations, files$output, "Trainers-Q", TrainersTable, interval="quarter")
 
 WriteToExcel(operations, files$output, "Adults-Peds Mortality", AdultsPedsMortalityTable,
              interval="quarter", allDf=allOperations)
@@ -113,4 +120,4 @@ WriteToExcel(operations, files$output, "Surgeon Mortality", SurgeonMortalityTabl
 
 cat("Done!", "\n")
 
-# CreateTemplateFrom("../output/audit.xlsx")
+# CreateTemplateFrom("../output/audit-2018-Q1.xlsx")

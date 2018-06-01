@@ -18,14 +18,16 @@ SurgeonMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Magdi.Yacoub.Mortality <- getGroupFn(allDf, year, Magdi.YacoubMortalityFilter)
-  Magdi.Yacoub.Mortality.Percent <- round(Magdi.Yacoub.Mortality/Magdi.Yacoub*100, digits = 1)
+  Magdi.Yacoub.Mortality.Percent <- round(Magdi.Yacoub.Mortality/Magdi.Yacoub*100, digits = 1) %>%
+    convertNANtoZero()
 
   Carin.van.Doorn <- getGroupFn(df, year, list(list("Surgeon.1", "Carin van Doorn")))
   Carin.van.DoornMortalityFilter <- list(list("Surgeon.1", "Carin van Doorn"),
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Carin.van.Doorn.Mortality <- getGroupFn(allDf, year, Carin.van.DoornMortalityFilter)
-  Carin.van.Doorn.Mortality.Percent <- round(Carin.van.Doorn.Mortality/Carin.van.Doorn*100, digits = 1)
+  Carin.van.Doorn.Mortality.Percent <- round(Carin.van.Doorn.Mortality/Carin.van.Doorn*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   Ahmed.Afifi <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Afifi")))
@@ -33,7 +35,8 @@ SurgeonMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Ahmed.Afifi.Mortality <- getGroupFn(allDf, year, Ahmed.AfifiMortalityFilter)
-  Ahmed.Afifi.Mortality.Percent <- round(Ahmed.Afifi.Mortality/Ahmed.Afifi*100, digits = 1)
+  Ahmed.Afifi.Mortality.Percent <- round(Ahmed.Afifi.Mortality/Ahmed.Afifi*100, digits = 1) %>%
+    convertNANtoZero()
 
 
 
@@ -42,7 +45,8 @@ SurgeonMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Ahmed.Shazly.Mortality <- getGroupFn(allDf, year, Ahmed.ShazlyMortalityFilter)
-  Ahmed.Shazly.Mortality.Percent <- round(Ahmed.Shazly.Mortality/Ahmed.Shazly*100, digits = 1)
+  Ahmed.Shazly.Mortality.Percent <- round(Ahmed.Shazly.Mortality/Ahmed.Shazly*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   Hatem.Hosny <- getGroupFn(df, year, list(list("Surgeon.1", "Hatem Hosny")))
@@ -50,7 +54,8 @@ SurgeonMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Hatem.Hosny.Mortality <- getGroupFn(allDf, year, Hatem.HosnyMortalityFilter)
-  Hatem.Hosny.Mortality.Percent <- round(Hatem.Hosny.Mortality/Hatem.Hosny*100, digits = 1)
+  Hatem.Hosny.Mortality.Percent <- round(Hatem.Hosny.Mortality/Hatem.Hosny*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   Walid.Simry <- getGroupFn(df, year, list(list("Surgeon.1", "Walid Simry")))
@@ -58,7 +63,8 @@ SurgeonMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Walid.Simry.Mortality <- getGroupFn(allDf, year, Walid.SimryMortalityFilter)
-  Walid.Simry.Mortality.Percent <- round(Walid.Simry.Mortality/Walid.Simry*100, digits = 1)
+  Walid.Simry.Mortality.Percent <- round(Walid.Simry.Mortality/Walid.Simry*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   Ahmed.Mahgoub <- getGroupFn(df, year, list(list("Surgeon.1", "Ahmed Mahgoub")))
@@ -66,7 +72,8 @@ SurgeonMortalityTable <- function(df, year, interval = "month", allDf = df) {
                                     list("Mortality", TRUE),
                                     list("Date.of.mortality.", "", "neq"))
   Ahmed.Mahgoub.Mortality <- getGroupFn(allDf, year, Ahmed.MahgoubMortalityFilter)
-  Ahmed.Mahgoub.Mortality.Percent <- round(Ahmed.Mahgoub.Mortality/Ahmed.Mahgoub*100, digits = 1)
+  Ahmed.Mahgoub.Mortality.Percent <- round(Ahmed.Mahgoub.Mortality/Ahmed.Mahgoub*100, digits = 1) %>%
+    convertNANtoZero()
 
 
   separator <- rep(NA, times=length(usedInterval))
