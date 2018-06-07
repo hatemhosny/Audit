@@ -18,10 +18,6 @@ FilterBy <- function(df, x, val=TRUE, match="eq") {
 }
 
 FilterIsolated <- function(df, x, val=TRUE, prefix="Procedures..choice.") {
-
-  print(x)
-
-
   df <- df[df[,x] == val,] %>%
     rename_at(vars(starts_with(x)), ~"tmp") %>%
     filter_at(vars(starts_with(prefix)), all_vars(. != val)) %>%

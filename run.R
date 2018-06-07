@@ -14,8 +14,8 @@ Config$Quarter <- "Q1"
 this.year <- last(Config$Years)
 last.Year <- this.year - 1
 
-# ExportFromRedcap(files$raw.data)
-# ImportCleanSave(files$raw.data, files$clean.data)
+ExportFromRedcap(files$raw.data)
+ImportCleanSave(files$raw.data, files$clean.data)
 
 allOperations <- read.csv(files$clean.data, stringsAsFactors = FALSE) %>%
   FilterByQuarter(Config$Years, Config$Quarter)
