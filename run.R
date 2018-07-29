@@ -3,19 +3,19 @@ source("SourceScripts.R")
 LoadDependencies(c("dplyr", "xlsx", "lubridate", "circlize", "RCurl"))
 
 files <- list(
-  raw.data = "../data/data.csv",
-  clean.data = "../data/data-clean.csv",
-  output = "../output/audit-2018-Q1.xlsx",
-  output.plots =  "../output/audit-2018-Q1-plots.xlsx"
+  raw.data = "../data/data-2018-07-29.csv",
+  clean.data = "../data/data-clean-2018-07-29.csv",
+  output = "../output/audit-2018-Q2.xlsx",
+  output.plots =  "../output/audit-2018-Q2-plots.xlsx"
 )
 
 Config$Years <- 2009:2018
-Config$Quarter <- "Q1"
+Config$Quarter <- "Q2"
 this.year <- last(Config$Years)
 last.Year <- this.year - 1
 
-ExportFromRedcap(files$raw.data)
-ImportCleanSave(files$raw.data, files$clean.data)
+# ExportFromRedcap(files$raw.data)
+# ImportCleanSave(files$raw.data, files$clean.data)
 
 allOperations <- read.csv(files$clean.data, stringsAsFactors = FALSE) %>%
   FilterByQuarter(Config$Years, Config$Quarter)
@@ -23,8 +23,7 @@ allOperations <- read.csv(files$clean.data, stringsAsFactors = FALSE) %>%
 operations <- allOperations %>%
   FilterBy("Procedures..choice.Exploration.for.bleeding.", FALSE)
 
-
-
+# list of functions for summary table
 tables <- list(
   TotalsTable,
   AdultsPedsTable,
@@ -46,17 +45,17 @@ cat("Creating plots...", "\n")
 
 operations %>%
   FilterBy("Section", "Adults") %>%
-  # FilterByYear(2017) %>%
-  FilterByQuarter(2018, "Q1") %>%
+  # FilterByYear(2018) %>%
+  FilterByQuarter(2018, "Q2") %>%
   WriteToExcel(files$output.plots, "Plots", PlotProcedures, isPlot=TRUE
-               , title="Adults 2018-Q1", section="Adults", template="")
+               , title="Adults 2018-Q2", section="Adults", template="")
 
 operations %>%
   FilterBy("Section", "Pediatrics") %>%
-  # FilterByYear(2017) %>%
-  FilterByQuarter(2018, "Q1") %>%
+  # FilterByYear(2018) %>%
+  FilterByQuarter(2018, "Q2") %>%
   WriteToExcel(files$output.plots, "Plots", PlotProcedures, isPlot=TRUE
-               , title="Pediatrics 2018-Q1", section="Pediatrics", template="", append=TRUE)
+               , title="Pediatrics 2018-Q2", section="Pediatrics", template="", append=TRUE)
 
 
 cat("Creating reports...", "\n")
@@ -144,7 +143,7 @@ WriteToExcel(operations, files$output, "Ped. Age Groups Mortality", AgeGroupsMor
              interval="quarter", allDf=allOperations)
 
 WriteToExcel(allOperations, files$output, "Procedure Mortality", ProcedureMortalityTable,
-             2017, interval="quarter")
+             this.year, interval="quarter")
 
 WriteToExcel(operations, files$output, "Surgeon Mortality", SurgeonMortalityTable,
              interval="quarter", allDf=allOperations)
@@ -159,6 +158,8 @@ WriteToExcel(operations, files$output, "Summary", SummaryTable, funs=tables, isS
 WriteToExcel(operations, files$output, "Summary-Q", SummaryTable, funs=tables, isSummary=TRUE,
              allDf=allOperations, interval="quarter")
 
+WriteToExcel(operations, files$output, "Length of Stay", SummaryTable,
+             funs=list(LengthOfStayTable), this.year:last.Year, isSummary=TRUE, allDf=allOperations)
 
 cat("Done!", "\n")
 

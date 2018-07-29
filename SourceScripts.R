@@ -26,6 +26,7 @@ source("AdultsPedsMortalityTable.R")
 source("AgeGroupsMortalityTable.R")
 source("ProcedureMortalityTable.R")
 source("SurgeonMortalityTable.R")
+source("LengthOfStayTable.R")
 source("PlotSurgeonProcedures.R")
 
 source("SummaryTable.R")
